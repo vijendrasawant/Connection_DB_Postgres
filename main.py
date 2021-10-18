@@ -25,6 +25,32 @@ def config(filename='config.ini', section='Database'):
     return db
 
 
+def connect():
+    #connect to the postgres database server
+    conn = None
+
+    try:
+        #read connection parameters
+        params = config('config.ini','Database')
+        print(f'Connecting to Postgres Database {params[1]} ')
+        conn = psycopg2.connect(**params)
+
+        #create a cursor
+        cur = conn.cursor()
+
+        cur.execute('select * from customer')
+        print(cur)
+        cur.close()
+    except(Exception,psycopg2.DatabaseError) as error:
+        print(error)
+
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed')
+
+
+
 
 
 
