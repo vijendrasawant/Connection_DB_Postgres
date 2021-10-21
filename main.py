@@ -17,11 +17,15 @@ def config(filename='config.ini', section='Database'):
 
     if parser.has_section(section):
         params = parser.items(section)
+        print(f"{params}")
         for param in params:
-            db[param[0]] = params[1]
+            print(f"{param}, ")
+            db[param[0]] = param[1]
+
     else:
         raise Exception('Section {0] not found in the {1} file'.format(section,filename))
 
+    print(f"{db}")
     return db
 
 
@@ -32,14 +36,19 @@ def connect():
     try:
         #read connection parameters
         params = config('config.ini','Database')
-        print(f'Connecting to Postgres Database {params[1]} ')
-        conn = psycopg2.connect(**params)
+        print(f'Connecting to Postgres Database  ')
+        conn = psycopg2.connect(host="localhost",database="Suppliers",user="postgres",password="Admin@123")
 
         #create a cursor
         cur = conn.cursor()
+        print(cur)
 
         cur.execute('select * from customer')
-        print(cur)
+        result = cur.fetchall()
+        print(result)
+        for i in result:
+            print(i)
+
         cur.close()
     except(Exception,psycopg2.DatabaseError) as error:
         print(error)
@@ -50,6 +59,9 @@ def connect():
             print('Database connection closed')
 
 
+
+if __name__ == '__main__':
+    connect()
 
 
 
