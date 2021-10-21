@@ -37,7 +37,10 @@ def connect():
         #read connection parameters
         params = config('config.ini','Database')
         print(f'Connecting to Postgres Database  ')
-        conn = psycopg2.connect(host="localhost",database="Suppliers",user="postgres",password="Admin@123")
+        #print(f'{params[0]} param printing')
+        print(f' {params.get("server")} ')
+        #conn = psycopg2.connect(host="localhost",database="Suppliers",user="postgres",password="Admin@123")
+        conn = psycopg2.connect(host=params.get("server"),database=params.get("database"),user=params.get("username"),password=params.get("password"))
 
         #create a cursor
         cur = conn.cursor()
